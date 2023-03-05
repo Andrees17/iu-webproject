@@ -21,8 +21,19 @@ app.get("/", function (req, res) {
     res.send("<h1> Hello World </h1>")
 })
 
+// GET WORKOUTS
 app.get("/workouts", function(req, res) {
-    res.render("workout");
+    const query = dataModel.Workout.find();
+    query.then(function(foundWorkouts){
+    res.render("workout", {workoutTitle: "workout", foundWorkouts:foundWorkouts});
+    });
+})
+
+// POST WORKOUTS
+app.post("/workouts", function(req, res) {
+    const workoutName = req.body.workoutName;
+    insertWorkout(workoutName);
+    res.redirect("/workouts")
 })
 
 app.get("/:workoutName/exercises", function(req, res) {
@@ -32,6 +43,24 @@ app.get("/:workoutName/exercises", function(req, res) {
 app.get("/:workoutName/:exerciseName/days", function(req, res) {
     res.send("You have here a list of days for this exercise");
 })
+
+
+// insert a workout object into database
+async function insertWorkout(workoutName){
+
+    const workout = new dataModel.Workout({
+        name: workoutName
+    });
+
+    const insertQuery = workout.save();
+
+    await insertQuery.then(
+        function(){
+            console.log("The workout " + workoutName + " was successfully imported")
+        }).catch(function(err){
+            console.log("UPS! ERROR:" + err);
+        });
+}
 
 
 
