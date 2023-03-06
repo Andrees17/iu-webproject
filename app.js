@@ -36,8 +36,30 @@ app.post("/workouts", function(req, res) {
     res.redirect("/workouts")
 })
 
-app.get("/:workoutName/exercises", function(req, res) {
-    res.send("You have here a list of exercises for this workout")
+// GET EXERCISES FROM A WORKOUT
+app.get("/:workoutID/exercises", function(req, res) {
+    const workoutID = req.params.workoutID;
+
+    (async () => {
+        const exercises = await getExercisesFromWorkout(workoutID);
+        const workoutName = await getWorkoutNameById(workoutID);
+        if(exercises.length > 0){
+            res.render("exercise", {workoutID:workoutID, workoutName:workoutName, exercises:exercises});
+
+        } else {
+            res.render("exercise", {workoutID:workoutID, workoutName:workoutName, exercises:[]});
+        }
+    })();
+})
+
+// POST AN EXERCISE
+app.post("/:workoutID/exercises", function(req, res) {
+    const exerciseName = req.body.exerciseName;
+    const workoutID = req.params.workoutID;
+    (async () => {
+        insertExercise(exerciseName, workoutID);
+        res.redirect("/"+workoutID+"/exercises");
+    })();
 })
 
 app.get("/:workoutName/:exerciseName/days", function(req, res) {
@@ -62,7 +84,39 @@ async function insertWorkout(workoutName){
         });
 }
 
+async function getExercisesFromWorkout(workoutID){
 
+    const query = dataModel.Workout.findOne({_id:workoutID});
+    const workout = await query;
+    return workout.exercises;
+    
+/*     query.then(function(workout){
+        let exercises = workout.exercises;
+        return exercises;
+    }).catch(function(error){
+        console.log("ups" + err)
+    }); */
+
+}
+
+async function getWorkoutNameById(workoutID){
+    const query = dataModel.Workout.findOne({_id:workoutID});
+    const workout = await query;
+    return workout.name;
+}
+
+async function insertExercise(exerciseName, workoutID){
+
+    const exercise = new dataModel.Exercise({
+        name: exerciseName
+    });
+
+    const findQuery = dataModel.Workout.findOne({_id:workoutID});
+    const workout = await findQuery;
+    await workout.exercises.push(exercise);
+    await workout.save()
+
+}
 
 
 

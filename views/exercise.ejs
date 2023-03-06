@@ -1,41 +1,41 @@
 <%- include("partials/header") -%>
 
   <div class="box" id="heading">
-    <h1> Workout</h1>
+    <h1> <%= workoutName %></h1>
   </div>
 
   <div class="box">
 
     <div class="list-group">
 
-      <% foundWorkouts.forEach(function(workout){ %>
-        <a href="/<%= workout._id %>/exercises" class="list-group-item list-group-item-action">
-          <%= workout.name %>
+      <% exercises.forEach(function(exercise){ %>
+        <a href="/<%= workoutID %>/<%= exercise._id %>/days" class="list-group-item list-group-item-action">
+          <%= exercise.name %>
         </a>
         <% });%>
     </div>
 
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createWorkoutModal">
-      Add Workout
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createExerciseModal">
+      Add Exercise
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="createWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="createWorkoutModal"
+    <div class="modal fade" id="createExerciseModal" tabindex="-1" role="dialog" aria-labelledby="createExerciseModal"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="createWorkoutModal">Workout Name</h5>
+            <h5 class="modal-title" id="createExerciseModal">Exercise Name</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form action="/workouts" method="post">
+            <form action="/<%= workoutID %>/exercises" method="post">
               <div class="form-group">
-                <input type="text" class="form-control" name="workoutName" placeholder="Name">
+                <input type="text" class="form-control" name="exerciseName" placeholder="Name">
               </div>
               <button type="submit" class="btn btn-primary">Add</button>
               <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
