@@ -1,0 +1,27 @@
+
+.dropright
+{
+    cursor: pointer
+}
+
+.dropright:hover > div:nth-child(-n+2) {
+background: #75a4fa !important
+}
+
+.object-link
+{
+    all: unset;
+}
+.object-link:hover
+{
+    all:unset;
+}
+
+.three-dots-div{
+    text-align: left;
+}
+
+td > .bi-three-dots-vertical{
+    float: right;
+    cursor: pointer;
+}

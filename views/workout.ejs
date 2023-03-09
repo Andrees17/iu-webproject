@@ -6,48 +6,83 @@
 
   <div class="box">
 
-    <div class="list-group">
-
-      <% foundWorkouts.forEach(function(workout){ %>
-        <a href="/<%= workout._id %>/exercises" class="list-group-item list-group-item-action">
-          <%= workout.name %>
-        </a>
-        <% });%>
-    </div>
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createWorkoutModal">
-      Add Workout
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="createWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="createWorkoutModal"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createWorkoutModal">Workout Name</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+    <% foundWorkouts.forEach(function(workout){ %>
+      <div class="row">
+        <div class="btn-group dropright col-6">
+          <div class="p-3 mb-2 bg-light text-dark col-11"
+            onclick="window.location.href='/<%= workout._id %>/exercises'">
+            <%= workout.name %>
           </div>
-          <div class="modal-body">
-            <form action="/workouts" method="post">
-              <div class="form-group">
-                <input type="text" class="form-control" name="workoutName" placeholder="Name">
-              </div>
-              <button type="submit" class="btn btn-primary">Add</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <div class="three-dots-div p-3 mb-2 bg-light text-dark col-2" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+          <div class="dropdown-menu">
+            <form method="post" action="/workouts/<%= workout._id %>/modify">
+              <input type="hidden" name="action" value="delete">
+              <a class="dropdown-item" onclick="this.parentNode.submit();">Delete</a>
             </form>
+            <a class="dropdown-item" data-workoutid="<%= workout._id %>" data-toggle="modal"
+              data-target="#updateWorkoutModal">Edit</a>
           </div>
         </div>
       </div>
-    </div>
+    <% });%>
 
 
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createWorkoutModal">
+          Add Workout
+        </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="createWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="createWorkoutModal"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="createWorkoutModal">Workout Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/workouts" method="post">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="workoutName" placeholder="Name" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Add</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!-- update Workout Modal -->
+        <div class="modal fade" id="updateWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="updateWorkoutModal"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="updateWorkoutModal">Workout Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/workouts/workoutid/modify" method="post">
+                  <input type="hidden" name="action" value="update">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="workoutName" placeholder="Name" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Edit Name</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
   </div>
 

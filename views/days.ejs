@@ -1,0 +1,126 @@
+<%- include("partials/header") -%>
+
+  <div class="box" id="heading">
+    <h1>
+      <%= exerciseName %> - Days History
+    </h1>
+  </div>
+
+  <div class="box">
+
+    <div class="list-group">
+
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date (d/m/y)</th>
+            <th scope="col">Sets</th>
+            <th scope="col">Reps</th>
+            <th scope="col">Weight (Kg)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% days.forEach(function(day){ %>
+            <tr>
+              <th scope="row">
+                <%=day.date%>
+              </th>
+              <td>
+                <%= day.sets %>
+              </td>
+              <td>
+                <%= day.reps %>
+              </td>
+              <td>
+                <%= day.weight %>
+
+                  <i class="bi bi-three-dots-vertical" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false"></i>
+
+                  <div class="dropdown-menu">
+                    <form method="post" action="/<%= workoutID %>/<%= exerciseID %>/<%= day._id %>/modify">
+                      <input type="hidden" name="action" value="delete">
+                      <a class="dropdown-item" onclick="this.parentNode.submit();">Delete</a>
+                    </form>
+                    <a class="dropdown-item" data-day='{"date": "<%= day.date %>", "sets": <%= day.sets %>, "reps": "<%= day.reps %>", "weight": "<%= day.weight %>", "_id": "<%= day._id %>"}' data-toggle="modal"
+                      data-target="#updateDayModal">Edit</a>
+                  </div>
+
+              </td>
+            </tr>
+            <% });%>
+
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDayModal">
+      Add Day
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createDayModal" tabindex="-1" role="dialog" aria-labelledby="createDayModal"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createDayModal">Day</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/<%= workoutID %>/<%= exerciseID %>/days" method="post">
+              <div class="form-group">
+                <input type="date" class="form-control" name="date" placeholder="date" required>
+                <input type="number" class="form-control" name="sets" placeholder="sets" required>
+                <input type="text" class="form-control" name="reps" placeholder="reps" required>
+                <input type="text" class="form-control" name="weight" placeholder="weight (in Kg)" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- update day Modal -->
+    <div class="modal fade" id="updateDayModal" tabindex="-1" role="dialog" aria-labelledby="updateDayModal"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateDayModal">Edit Day</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/<%= workoutID %>/<%= exerciseID %>/dayid/modify" method="post">
+              <input type="hidden" name="action" value="update">
+              <div class="form-group">
+                <input type="date" class="form-control" name="date" placeholder="date" required>
+                <input type="number" class="form-control" name="sets" placeholder="sets" required>
+                <input type="text" class="form-control" name="reps" placeholder="reps" required>
+                <input type="text" class="form-control" name="weight" placeholder="weight (in Kg)" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Edit Day</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+  <%- include("partials/footer") -%>
