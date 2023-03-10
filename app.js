@@ -17,7 +17,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/workoutsDB");
 
 // GET ROOT
 app.get("/", function (req, res) {
-  res.send("<h1> Hello World </h1>");
+  res.redirect("/login");
+});
+
+//GET LOGIN PAGE
+app.get("/login", function (req, res) {
+  res.render("login");
+});
+//GET SIGNUP PAGE
+app.get("/signup", function (req, res) {
+  res.render("signup");
 });
 
 // GET WORKOUTS
