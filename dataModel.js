@@ -1,4 +1,11 @@
 const mongoose = require("mongoose");
+// Connect to the workouts database
+const workoutsDB = mongoose.createConnection(
+  "mongodb://127.0.0.1:27017/workoutsDB"
+);
+
+// Connect to the  users database
+const usersDB = mongoose.createConnection("mongodb://127.0.0.1:27017/usersDB");
 
 const daySchema = new mongoose.Schema({
   date: {
@@ -33,8 +40,19 @@ const workoutSchema = new mongoose.Schema({
     required: true,
   },
   exercises: [exerciseSchema],
+  _userId: {
+    type: String,
+    required: true,
+  },
 });
 
-module.exports.Workout = mongoose.model("Workout", workoutSchema);
-module.exports.Exercise = mongoose.model("Exercise", exerciseSchema);
-module.exports.Day = mongoose.model("Day", daySchema);
+module.exports.Workout = workoutsDB.model("Workout", workoutSchema);
+module.exports.Exercise = workoutsDB.model("Exercise", exerciseSchema);
+module.exports.Day = workoutsDB.model("Day", daySchema);
+
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+});
+
+module.exports.User = usersDB.model("User", userSchema);

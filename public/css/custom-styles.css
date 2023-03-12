@@ -29,11 +29,13 @@ td > .bi-three-dots-vertical{
     cursor: pointer;
 }
 
-.signup-button-form a{
-
+.nav-link {
+    color: #01d28e !important;
+    cursor: pointer
 }
 
 .signup-button {
         color: #01d28e !important;
         cursor: pointer
 }
+

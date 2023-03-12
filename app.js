@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 var _ = require("lodash");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const uuid = require("uuid");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -13,25 +15,110 @@ app.use(express.static("public"));
 app.locals._ = _;
 
 //Database Connection
-mongoose.connect("mongodb://127.0.0.1:27017/workoutsDB");
+//const workoutsDB = mongoose.connect("mongodb://127.0.0.1:27017/workoutsDB");
 
 // GET ROOT
 app.get("/", function (req, res) {
   res.redirect("/login");
 });
 
+app.use(
+  session({
+    secret: uuid.v4(),
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // set to true if using HTTPS
+  })
+);
+
 //GET LOGIN PAGE
 app.get("/login", function (req, res) {
   res.render("login");
 });
+
+//POST LOGIN PAGE
+app.post("/login", function (req, res) {
+  const userLogin = {
+    email: req.body.email.toLowerCase(),
+    password: req.body.password,
+  };
+
+  dataModel.User.findOne({ email: userLogin.email })
+    .then(function (attemptingUser) {
+      if (attemptingUser) {
+        if (attemptingUser.password === userLogin.password) {
+          req.session.userId = attemptingUser._id.toString();
+          console.log(
+            "The User -> " + userLogin.email + " was successfully logged in"
+          );
+          return res.redirect("/workouts");
+        } else {
+          console.log(
+            "The password for " + userLogin.email + " was not correct"
+          );
+          return res.send(
+            "The password for " + userLogin.email + " was not correct"
+          );
+        }
+      } else {
+        console.log("The User -> " + userLogin.email + " was not found");
+        return res.send(userLogin.email + " not found");
+      }
+    })
+    .catch(function (err) {
+      console.log(
+        "UPS! Something happen during login of " +
+          userLogin.email +
+          " -> " +
+          err
+      );
+    });
+});
+
 //GET SIGNUP PAGE
 app.get("/signup", function (req, res) {
   res.render("signup");
 });
 
+//POST SIGNUP PAGE
+app.post("/signup", function (req, res) {
+  const newUserInput = {
+    email: req.body.email.toLowerCase(),
+    password: req.body.password,
+  };
+
+  dataModel.User.findOne({ email: newUserInput.email }).then(function (
+    userExist
+  ) {
+    if (userExist) {
+      console.log("The User ->" + newUserInput.email + " already exists");
+      return res.redirect("/signup");
+    }
+    //If User does not exist, then create a new one
+    const newUser = new dataModel.User({
+      email: newUserInput.email,
+      password: newUserInput.password,
+    });
+
+    (async () => {
+      const insertQuery = newUser.save();
+      await insertQuery
+        .then(function () {
+          console.log(
+            "The User -> " + newUserInput.email + " was successfully registered"
+          );
+          return res.redirect("/login");
+        })
+        .catch(function (err) {
+          console.log("UPS! ERROR:" + err);
+        });
+    })();
+  });
+});
+
 // GET WORKOUTS
 app.get("/workouts", function (req, res) {
-  const query = dataModel.Workout.find();
+  const query = dataModel.Workout.find({ _userId: req.session.userId });
   query.then(function (foundWorkouts) {
     res.render("workout", {
       workoutTitle: "workout",
@@ -43,11 +130,21 @@ app.get("/workouts", function (req, res) {
 // POST WORKOUTS
 app.post("/workouts", function (req, res) {
   const workoutName = req.body.workoutName;
-
   (async () => {
-    await insertWorkout(workoutName);
+    await insertWorkout(workoutName, req.session.userId);
     res.redirect("/workouts");
   })();
+});
+
+// POST LOG OUT
+app.post("/logout", function (req, res) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/login");
+    }
+  });
 });
 
 //DELETE OR UPDATE A WORKOUTS
@@ -184,9 +281,10 @@ app.post("/:workoutID/:exerciseID/:dayID/modify", function (req, res) {
 });
 
 // insert a workout object into database
-async function insertWorkout(workoutName) {
+async function insertWorkout(workoutName, userId) {
   const workout = new dataModel.Workout({
     name: workoutName,
+    _userId: userId,
   });
 
   const insertQuery = workout.save();
