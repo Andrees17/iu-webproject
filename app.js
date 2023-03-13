@@ -10,17 +10,9 @@ const uuid = require("uuid");
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
-//enable use of lodash inside a ejs template
 app.locals._ = _;
-
-//Database Connection
-//const workoutsDB = mongoose.connect("mongodb://127.0.0.1:27017/workoutsDB");
-
-// GET ROOT
-app.get("/", function (req, res) {
-  res.redirect("/login");
-});
 
 app.use(
   session({
@@ -31,8 +23,21 @@ app.use(
   })
 );
 
+//Require authentication for all routes except login and sign up
+app.use((req, res, next) => {
+  if (["/", "/login", "/signup"].includes(req.path)) {
+    return isAuthenticated(req, res, next);
+  }
+  return requireAuth(req, res, next);
+});
+
+// GET ROOT
+app.get("/", function (req, res) {
+  res.redirect("/login");
+});
+
 //GET LOGIN PAGE
-app.get("/login", function (req, res) {
+app.get("/login", isAuthenticated, function (req, res) {
   res.render("login");
 });
 
@@ -45,24 +50,24 @@ app.post("/login", function (req, res) {
 
   dataModel.User.findOne({ email: userLogin.email })
     .then(function (attemptingUser) {
+      let message = "";
       if (attemptingUser) {
         if (attemptingUser.password === userLogin.password) {
           req.session.userId = attemptingUser._id.toString();
+          res.cookie("loggedIn");
           console.log(
             "The User -> " + userLogin.email + " was successfully logged in"
           );
           return res.redirect("/workouts");
         } else {
-          console.log(
-            "The password for " + userLogin.email + " was not correct"
-          );
-          return res.send(
-            "The password for " + userLogin.email + " was not correct"
-          );
+          console.log("The User password is incorrect");
+          message = "alert-password";
+          res.render("login", { message: message });
         }
       } else {
-        console.log("The User -> " + userLogin.email + " was not found");
-        return res.send(userLogin.email + " not found");
+        console.log("The Email does not exist");
+        message = "alert-email";
+        res.render("login", { message: message });
       }
     })
     .catch(function (err) {
@@ -76,7 +81,7 @@ app.post("/login", function (req, res) {
 });
 
 //GET SIGNUP PAGE
-app.get("/signup", function (req, res) {
+app.get("/signup", isAuthenticated, function (req, res) {
   res.render("signup");
 });
 
@@ -90,9 +95,11 @@ app.post("/signup", function (req, res) {
   dataModel.User.findOne({ email: newUserInput.email }).then(function (
     userExist
   ) {
+    let message = "";
     if (userExist) {
       console.log("The User ->" + newUserInput.email + " already exists");
-      return res.redirect("/signup");
+      message = "already-exists";
+      return res.render("signup", { message: message });
     }
     //If User does not exist, then create a new one
     const newUser = new dataModel.User({
@@ -107,12 +114,25 @@ app.post("/signup", function (req, res) {
           console.log(
             "The User -> " + newUserInput.email + " was successfully registered"
           );
-          return res.redirect("/login");
+          message = "signup-successful";
+          return res.render("login", { message: message });
         })
         .catch(function (err) {
           console.log("UPS! ERROR:" + err);
         });
     })();
+  });
+});
+
+// POST LOG OUT
+app.post("/logout", function (req, res) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.clearCookie("loggedIn", true);
+      res.redirect("/login");
+    }
   });
 });
 
@@ -134,17 +154,6 @@ app.post("/workouts", function (req, res) {
     await insertWorkout(workoutName, req.session.userId);
     res.redirect("/workouts");
   })();
-});
-
-// POST LOG OUT
-app.post("/logout", function (req, res) {
-  req.session.destroy(function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/login");
-    }
-  });
 });
 
 //DELETE OR UPDATE A WORKOUTS
@@ -600,6 +609,26 @@ function getDate(date) {
   const day = new Date(date);
   const options = { year: "numeric", month: "numeric", day: "numeric" };
   return day.toLocaleDateString("en-GB", options);
+}
+
+//Middleware function
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.userId) {
+    return res.redirect("/workouts");
+  } else {
+    return next();
+  }
+}
+
+// Middleware to check if user is authenticated
+function requireAuth(req, res, next) {
+  if (req.session && req.session.userId) {
+    // User is authenticated
+    return next();
+  } else {
+    // User is not authenticated
+    return res.redirect("/login");
+  }
 }
 
 //LISTEN PORT 3000

@@ -1,6 +1,5 @@
 <%- include("partials/header") -%>
 
-
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -25,7 +24,7 @@
                             </div>
                             <form action="/signup" method="post" class="signup-form">
                                 <div class="form-group mt-3">
-                                    <input type="email" name="email" class="form-control" required>
+                                    <input id="email-field" type="email" name="email" class="form-control" required>
                                     <label class="form-control-placeholder" for="email">Email address</label>
                                 </div>
                                 <div class="form-group">
@@ -40,11 +39,21 @@
                                         up</button>
                                 </div>
                             </form>
-                            <form method="GET" action="/login">
-                                <p class="text-center">Already Register?
-                                    <a class="signup-button" onclick="this.parentNode.parentNode.submit();">Log in</a>
-                                </p>
-                            </form>
+                            <% if(typeof message==='undefined' ){ %>
+                                <!-- nothing happens here -->
+                                <% } else if (message==="already-exists" ) { %>
+
+                                    <div class="alert alert-danger" role="alert">This email already exist!</div>
+
+                                    <% } %>
+
+                                        <form method="GET" action="/login">
+                                            <p class="text-center">Already Register?
+                                                <a class="signup-button"
+                                                    onclick="this.parentNode.parentNode.submit();">Log
+                                                    in</a>
+                                            </p>
+                                        </form>
                         </div>
                     </div>
                 </div>

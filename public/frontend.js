@@ -1,9 +1,5 @@
 console.log("Hi this is the frontend.js");
 
-//console.log($(document));
-
-//
-
 $(document).ready(function () {
   $("#updateWorkoutModal").on("show.bs.modal", function (event) {
     let anchorTag = $(event.relatedTarget);
@@ -61,3 +57,16 @@ $(document).ready(function () {
     }
   });
 })(jQuery);
+
+function isUserLoggedIn() {
+  if (document.cookie.includes("loggedIn")) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//If user is not logged in then hide the logout button
+if (!isUserLoggedIn()) {
+  $(".logout-item").hide();
+}
