@@ -1,22 +1,20 @@
 <%- include("partials/header") -%>
-
-  <div class="box" id="heading">
-    <h1> Workout</h1>
-  </div>
-
   <div class="box">
+    <h2 class="h2-title"> WORKOUTS </h2>
+
 
     <% foundWorkouts.forEach(function(workout){ %>
-      <div class="row">
-        <div class="btn-group dropright col-6">
-          <div class="p-3 mb-2 bg-light text-dark col-11"
+      <div class="row col-6">
+        <div class="btn-group dropright col-12 ">
+          <div class="item p-3 mb-2 col-11 custom-pallete-fourth"
             onclick="window.location.href='/<%= workout._id %>/exercises'">
             <%= workout.name %>
           </div>
-          <div class="three-dots-div p-3 mb-2 bg-light text-dark col-2" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+          <div class="item three-dots-div p-3 mb-2 col-1 custom-pallete-fourth" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
           </div>
+
           <div class="dropdown-menu">
             <form method="post" action="/workouts/<%= workout._id %>/modify">
               <input type="hidden" name="action" value="delete">
@@ -27,11 +25,11 @@
           </div>
         </div>
       </div>
-    <% });%>
+      <% });%>
 
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createWorkoutModal">
+        <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#createWorkoutModal">
           Add Workout
         </button>
 

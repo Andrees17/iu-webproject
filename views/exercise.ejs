@@ -1,88 +1,90 @@
 <%- include("partials/header") -%>
-
-  <div class="box" id="heading">
-    <h1> <%= workoutName %></h1>
-  </div>
-
   <div class="box">
+    <h2 class="h2-title">
+      <%= workoutName %>
+    </h2>
 
-      <% exercises.forEach(function(exercise){ %>
-        <div class="row">
-          <div class="btn-group dropright col-6">
-            <div class="p-3 mb-2 bg-light text-dark col-11"
-              onclick="window.location.href='/<%= workoutID %>/<%= exercise._id %>/days'">
-              <%= exercise.name %>
-            </div>
-            <div class="three-dots-div p-3 mb-2 bg-light text-dark col-2" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-              <i class="bi bi-three-dots-vertical"></i>
-            </div>
-            <div class="dropdown-menu">
-              <form method="post" action="/<%= workoutID %>/<%= exercise._id %>/modify">
-                <input type="hidden" name="action" value="delete">
-                <a class="dropdown-item" onclick="this.parentNode.submit();">Delete</a>
-              </form>
-              <a class="dropdown-item" data-exerciseid="<%= exercise._id %>"  data-toggle="modal"
-                data-target="#updateExerciseModal">Edit</a>
-            </div>
+    <% exercises.forEach(function(exercise){ %>
+      <div class="row col-6">
+        <div class="btn-group dropright col-12">
+          <div class="item p-3 mb-2 col-11 custom-pallete-fourth"
+            onclick="window.location.href='/<%= workoutID %>/<%= exercise._id %>/days'">
+            <%= exercise.name %>
           </div>
-        </div>
-        <% });%>
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createExerciseModal">
-      Add Exercise
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="createExerciseModal" tabindex="-1" role="dialog" aria-labelledby="createExerciseModal"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createExerciseModal">Exercise Name</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="item three-dots-div p-3 mb-2 col-1 custom-pallete-fourth" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
           </div>
-          <div class="modal-body">
-            <form action="/<%= workoutID %>/exercises" method="post">
-              <div class="form-group">
-                <input type="text" class="form-control" name="exerciseName" placeholder="Name" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Add</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <div class="dropdown-menu">
+            <form method="post" action="/<%= workoutID %>/<%= exercise._id %>/modify">
+              <input type="hidden" name="action" value="delete">
+              <a class="dropdown-item" onclick="this.parentNode.submit();">Delete</a>
             </form>
+            <a class="dropdown-item" data-exerciseid="<%= exercise._id %>" data-toggle="modal"
+              data-target="#updateExerciseModal">Edit</a>
           </div>
         </div>
       </div>
-    </div>
+      <% });%>
 
-    <!-- update Exercise Modal -->
-    <div class="modal fade" id="updateExerciseModal" tabindex="-1" role="dialog" aria-labelledby="updateExerciseModal"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateExerciseModal">Exercise Name</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+
+        <!-- Button trigger modal -->
+        <div class="row col-6 justify-content-center mt-2">
+          <button type="button" class="btn btn-primary" onclick="redirectToWorkouts()">
+            Back
+          </button>
+          <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createExerciseModal">
+            Add Exercise
           </button>
         </div>
-        <div class="modal-body">
-          <form action="/<%= workoutID %>/exerciseid/modify" method="post">
-            <input type="hidden" name="action" value="update">
-            <div class="form-group">
-              <input type="text" class="form-control" name="exerciseName" placeholder="Name" required>
+        <!-- Modal -->
+        <div class="modal fade" id="createExerciseModal" tabindex="-1" role="dialog"
+          aria-labelledby="createExerciseModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="createExerciseModal">Exercise Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/<%= workoutID %>/exercises" method="post">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="exerciseName" placeholder="Name" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Add</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </form>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary">Edit Name</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          </form>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <!-- update Exercise Modal -->
+        <div class="modal fade" id="updateExerciseModal" tabindex="-1" role="dialog"
+          aria-labelledby="updateExerciseModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="updateExerciseModal">Exercise Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/<%= workoutID %>/exerciseid/modify" method="post">
+                  <input type="hidden" name="action" value="update">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="exerciseName" placeholder="Name" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Edit Name</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 

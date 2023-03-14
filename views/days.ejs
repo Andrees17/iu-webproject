@@ -1,32 +1,28 @@
 <%- include("partials/header") -%>
 
-  <div class="box" id="heading">
-    <h1>
-      <%= exerciseName %> - Days History
-    </h1>
-  </div>
-
   <div class="box">
 
-    <div class="list-group">
+    <h2 class="h2-title">
+      <%= exerciseName %>
+    </h2>
 
-
-      <table class="table table-hover">
-        <thead>
-          <tr>
+    <div class="list-group row col-6">
+      <table class="table rounded">
+        <thead class="table-header custom-pallete-second">
+          <tr class>
             <th scope="col">Date (d/m/y)</th>
             <th scope="col">Sets</th>
             <th scope="col">Reps</th>
             <th scope="col">Weight (Kg)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="rounded">
 
           <% days.forEach(function(day){ %>
-            <tr>
-              <th scope="row">
+            <tr class="table-row rounded custom-pallete-fourth">
+              <td>
                 <%=day.date%>
-              </th>
+              </td>
               <td>
                 <%= day.sets %>
               </td>
@@ -44,8 +40,9 @@
                       <input type="hidden" name="action" value="delete">
                       <a class="dropdown-item" onclick="this.parentNode.submit();">Delete</a>
                     </form>
-                    <a class="dropdown-item" data-day='{"date": "<%= day.date %>", "sets": <%= day.sets %>, "reps": "<%= day.reps %>", "weight": "<%= day.weight %>", "_id": "<%= day._id %>"}' data-toggle="modal"
-                      data-target="#updateDayModal">Edit</a>
+                    <a class="dropdown-item"
+                      data-day='{"date": "<%= day.date %>", "sets": <%= day.sets %>, "reps": "<%= day.reps %>", "weight": "<%= day.weight %>", "_id": "<%= day._id %>"}'
+                      data-toggle="modal" data-target="#updateDayModal">Edit</a>
                   </div>
 
               </td>
@@ -58,9 +55,14 @@
 
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDayModal">
-      Add Day
-    </button>
+    <div class="row col-6 justify-content-center mt-2">
+      <button type="button" class="btn btn-primary" onclick="redirectToExercises()">
+        Back
+      </button>
+      <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createDayModal">
+        Add Day
+      </button>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="createDayModal" tabindex="-1" role="dialog" aria-labelledby="createDayModal"

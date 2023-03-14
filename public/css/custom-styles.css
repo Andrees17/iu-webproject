@@ -2,13 +2,41 @@
 ! My own custome style, done manually
  */
 
+body{
+  background-color: #CAF7FF;
+}
+
+.item{
+  color: white !important;
+  border-radius: 0.25rem;
+}
+
+tr {
+  color:white;
+}
+
+.table-row:hover{
+  background-color: #01d28e !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  color:white !important;
+}
+
 .dropright
 {
     cursor: pointer
 }
 
+.h2-title{
+  color: #004E71;
+}
+
 .dropright:hover > div:nth-child(-n+2) {
-background: #75a4fa !important
+background: #01d28e !important;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.btn:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
 }
 
 .object-link
@@ -30,12 +58,42 @@ td > .bi-three-dots-vertical{
 }
 
 .nav-link {
-    color: #01d28e !important;
-    cursor: pointer
+    color: white !important;
+}
+
+.nav-link:hover {
+  color: #004E71 !important;
+  cursor: pointer
 }
 
 .signup-button {
         color: #01d28e !important;
         cursor: pointer
 }
+
+.box{
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+.navbar-brand{
+  color:white;
+}
+  .custom-pallete-first {
+    background-color: #01d28e !important; 
+  }
+
+  .custom-pallete-second {
+    background-color: #004E71 !important; 
+  }
+
+  .custom-pallete-third {
+    background-color: #CAF7FF !important; 
+  }
+
+  .custom-pallete-fourth {
+    background-color: #507C95 !important; 
+  }
 

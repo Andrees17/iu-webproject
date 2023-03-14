@@ -70,3 +70,13 @@ function isUserLoggedIn() {
 if (!isUserLoggedIn()) {
   $(".logout-item").hide();
 }
+function redirectToWorkouts() {
+  window.location.href = "/workouts";
+}
+
+function redirectToExercises() {
+  const currentUrl = window.location.href;
+  const segments = currentUrl.split("/");
+  const workoutID = segments[3];
+  window.location.href = "/" + workoutID + "/exercises";
+}
