@@ -1,6 +1,6 @@
-/*
-! My own custome style, done manually
- */
+/**
+* ! My own custom stylng, done manually
+*/
 
 body{
   background-color: #CAF7FF;
@@ -81,19 +81,19 @@ flex-direction: column;
 .navbar-brand{
   color:white;
 }
-  .custom-pallete-first {
+.custom-pallete-first {
     background-color: #01d28e !important; 
   }
 
-  .custom-pallete-second {
+.custom-pallete-second {
     background-color: #004E71 !important; 
   }
 
-  .custom-pallete-third {
+.custom-pallete-third {
     background-color: #CAF7FF !important; 
   }
 
-  .custom-pallete-fourth {
+.custom-pallete-fourth {
     background-color: #507C95 !important; 
   }
 

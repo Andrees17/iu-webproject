@@ -4,6 +4,7 @@
       <%= workoutName %>
     </h2>
 
+    <!-- Iterate over each exercise in the exercises array  passed from app.js -->
     <% exercises.forEach(function(exercise){ %>
       <div class="row col-6">
         <div class="btn-group dropright col-12">
@@ -15,6 +16,7 @@
             aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
           </div>
+          <!-- Dropdown Edit/Delete modal -->
           <div class="dropdown-menu">
             <form method="post" action="/<%= workoutID %>/<%= exercise._id %>/modify">
               <input type="hidden" name="action" value="delete">
@@ -28,7 +30,7 @@
       <% });%>
 
 
-        <!-- Button trigger modal -->
+        <!-- Button Back and Add day -->
         <div class="row col-6 justify-content-center mt-2">
           <button type="button" class="btn btn-primary" onclick="redirectToWorkouts()">
             Back
@@ -37,7 +39,7 @@
             Add Exercise
           </button>
         </div>
-        <!-- Modal -->
+        <!-- Add Exercise Modal -->
         <div class="modal fade" id="createExerciseModal" tabindex="-1" role="dialog"
           aria-labelledby="createExerciseModal" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -61,7 +63,7 @@
           </div>
         </div>
 
-        <!-- update Exercise Modal -->
+        <!-- Update Dropdown Exercise Modal -->
         <div class="modal fade" id="updateExerciseModal" tabindex="-1" role="dialog"
           aria-labelledby="updateExerciseModal" aria-hidden="true">
           <div class="modal-dialog" role="document">

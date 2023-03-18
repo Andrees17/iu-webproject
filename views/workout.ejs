@@ -1,8 +1,8 @@
 <%- include("partials/header") -%>
   <div class="box">
-    <h2 class="h2-title"> WORKOUTS </h2>
+    <h2 class="h2-title"> WORKOUTS </h2> <!-- Title -->
 
-
+    <!-- Iterate over each workout in the foundWorkouts array  passed from app.js -->
     <% foundWorkouts.forEach(function(workout){ %>
       <div class="row col-6">
         <div class="btn-group dropright col-12 ">
@@ -14,7 +14,7 @@
             aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
           </div>
-
+          <!-- Dropdown Edit/Delete modal -->
           <div class="dropdown-menu">
             <form method="post" action="/workouts/<%= workout._id %>/modify">
               <input type="hidden" name="action" value="delete">
@@ -28,12 +28,12 @@
       <% });%>
 
 
-        <!-- Button trigger modal -->
+        <!-- Add Workout Button -->
         <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#createWorkoutModal">
           Add Workout
         </button>
 
-        <!-- Modal -->
+        <!-- Add Workout Modal -->
         <div class="modal fade" id="createWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="createWorkoutModal"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -57,7 +57,7 @@
           </div>
         </div>
 
-        <!-- update Workout Modal -->
+        <!-- Update dropdown Workout Modal -->
         <div class="modal fade" id="updateWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="updateWorkoutModal"
           aria-hidden="true">
           <div class="modal-dialog" role="document">

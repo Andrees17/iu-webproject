@@ -6,12 +6,14 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 col-lg-5">
                     <div class="wrap">
+                        <!-- Image -->
                         <div class="img portada" style="background-image: url(images/portada.png);"></div>
                         <div class="login-wrap p-4 p-md-5">
                             <div class="d-flex">
                                 <div class="w-100">
                                     <h3 class="mb-3">Sign In</h3>
                                 </div>
+                                <!-- !Social Media logins deactivated -->
                                 <!--                                 <div class="w-100">
                                     <p class="social-media d-flex justify-content-end">
                                         <a href="#"
@@ -22,7 +24,10 @@
                                                 class="fa fa-twitter"></span></a>
                                     </p>
                                 </div> -->
+                                <!--!-->
                             </div>
+
+                            <!-- Login Form -->
                             <form action="/login" method="post" class="signin-form">
                                 <div class="form-group mt-3">
                                     <input id="email-field" type="email" name="email" class="form-control" required>
@@ -35,10 +40,13 @@
                                     <span toggle="#password-field"
                                         class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
+
+                                <!-- Sign up button -->
                                 <div class="form-group">
                                     <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign
                                         In</button>
                                 </div>
+                                <!-- ! 'Remember Me' and 'Forgot Password' deactivated -->
                                 <!--                                 <div class="form-group d-md-flex">
                                     <div class="w-50 text-left">
                                         <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
@@ -50,7 +58,11 @@
                                         <a href="#">Forgot Password</a>
                                     </div>
                                 </div> -->
+                                <!--!-->
                             </form>
+
+
+                            <!-- Handle Alerts passed by app.js in the message var -->
                             <% if(typeof message==='undefined' ){%>
                                 <!-- nothing happens here -->
                                 <% } else if (message==="alert-password" ) { %>
@@ -64,7 +76,7 @@
                                             </div>
                                             <% } %>
 
-
+                                                <!-- Sign up link -->
                                                 <form method="GET" action="/signup">
                                                     <p class="text-center">Not a member?
                                                         <a class="signup-button"

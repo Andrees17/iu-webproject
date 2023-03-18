@@ -5,12 +5,15 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 col-lg-5">
                     <div class="wrap">
+                        <!-- Image -->
                         <div class="img" style="background-image: url(images/portada.png);"></div>
                         <div class="login-wrap p-4 p-md-5">
                             <div class="d-flex">
                                 <div class="w-100">
                                     <h3 class="mb-4">Sign Up</h3>
                                 </div>
+                                <!-- !Social Media logins deactivated -->
+                                <!-- 
                                 <div class="w-100">
                                     <p class="social-media d-flex justify-content-end">
                                         <a href="#"
@@ -21,7 +24,11 @@
                                                 class="fa fa-twitter"></span></a>
                                     </p>
                                 </div>
+                                -->
+                                <!--!-->
                             </div>
+
+                            <!-- Sign up Form -->
                             <form action="/signup" method="post" class="signup-form">
                                 <div class="form-group mt-3">
                                     <input id="email-field" type="email" name="email" class="form-control" required>
@@ -34,11 +41,14 @@
                                     <span toggle="#password-field"
                                         class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
+                                <!-- Sign up button -->
                                 <div class="form-group">
                                     <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign
                                         up</button>
                                 </div>
                             </form>
+
+                            <!-- Handle Alerts passed by app.js in the message var -->
                             <% if(typeof message==='undefined' ){ %>
                                 <!-- nothing happens here -->
                                 <% } else if (message==="already-exists" ) { %>
@@ -47,6 +57,7 @@
 
                                     <% } %>
 
+                                        <!-- Log in link -->
                                         <form method="GET" action="/login">
                                             <p class="text-center">Already Register?
                                                 <a class="signup-button"
