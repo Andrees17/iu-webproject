@@ -9,6 +9,13 @@ The target user group for this app is any individual who is interested in tracki
 App Benefits
 This easy-to-use and quick tool will be beneficial for those that want to track their workout progress, and for those already tracking their progress but in an unpractical and hard-to-track ways such as using fitness journals or the notes app.
 
+Prerequisites for installing Traily
+1. Javascript ES6 or later
+2. Node.js -v19.6.1
+3. Express.js framework
+4. MongoDB v6.0.4
+5. Mongoose (JS framework)
+
 Installation
 1. Clone the repository
 2. Install dependencies by running 'npm install' in the root directory of the project.
